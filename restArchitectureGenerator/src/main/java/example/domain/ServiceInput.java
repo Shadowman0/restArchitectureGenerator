@@ -15,6 +15,14 @@ public class ServiceInput extends Input {
 		return template;
 	}
 
+	public String getClassname() {
+		return clazz.getSimpleName().toString();
+	}
+
+	public String getPackage() {
+		return annotatedElement.getEnclosingElement().getSimpleName().toString();
+	}
+
 	public String getNameSuffix() {
 		return nameSuffix;
 	}
