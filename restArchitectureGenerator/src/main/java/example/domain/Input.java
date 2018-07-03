@@ -30,6 +30,8 @@ public abstract class Input {
 		this.clazz = clazz;
 	}
 
+	public abstract String getTemplate();
+
 	public abstract String getTargetName();
 
 	public String getPackageName() {

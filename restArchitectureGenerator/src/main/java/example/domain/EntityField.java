@@ -2,20 +2,20 @@ package example.domain;
 
 public class EntityField {
 
-	private Class<?> clazz;
+	private String type;
 	private String name;
 
-	public EntityField(Class<?> clazz, String name) {
-		this.clazz = clazz;
+	public EntityField(String type, String name) {
+		this.type = type;
 		this.name = name;
 	}
 
-	public Class<?> getClazz() {
-		return clazz;
+	public String getType() {
+		return type;
 	}
 
-	public void setClazz(Class<?> clazz) {
-		this.clazz = clazz;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getName() {

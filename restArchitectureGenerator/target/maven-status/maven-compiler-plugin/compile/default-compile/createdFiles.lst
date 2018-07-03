@@ -1,8 +1,9 @@
+example\domain\Input.class
+example\util\SourceFileWritingService.class
 example\processor\RestArchitectureProcessor.class
 example\domain\EntityField.class
-example\domain\Input.class
 example\util\ElementParsingService.class
 example\domain\RestArchitecture.class
-example\util\SourceFileWritingService.class
 example\util\Logger.class
+example\domain\DtoInput.class
 example\domain\ServiceInput.class

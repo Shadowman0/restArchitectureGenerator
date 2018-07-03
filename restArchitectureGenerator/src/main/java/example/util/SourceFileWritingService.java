@@ -9,7 +9,7 @@ import java.util.Objects;
 import javax.annotation.processing.Filer;
 import javax.tools.JavaFileObject;
 
-import example.domain.ServiceInput;
+import example.domain.Input;
 import freemarker.core.ParseException;
 import freemarker.template.Configuration;
 import freemarker.template.MalformedTemplateNameException;
@@ -33,26 +33,17 @@ public class SourceFileWritingService {
 		freemarkerCfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 	}
 
-	private void createFiles(final List<ServiceInput> inputs) throws TemplateNotFoundException,
-			MalformedTemplateNameException, ParseException, IOException, TemplateException {
-		String templateName = "templates/service.ftl";
-		Template template = freemarkerCfg.getTemplate(templateName);
-		for (ServiceInput input : inputs) {
-			// Map<String, Object> modelMap = new HashMap<>();
-			// modelMap.put("packageName", clazz.getPackageName());
-			// modelMap.put("sourcePackageName", clazz.getPackageName());
-			// modelMap.put("targetPackageName", clazz.getTargetPackageName());
-			// modelMap.put("source", clazz.getClazz());
-			// modelMap.put("target", clazz.getTarget());
-			// modelMap.put("generatedClazzName", input.getTargetName());
-			// modelMap.put("fields", input.getFields());
+	private void createFiles(final List<Input> inputs) throws TemplateNotFoundException, MalformedTemplateNameException,
+			ParseException, IOException, TemplateException {
+		for (Input input : inputs) {
+			Template template = freemarkerCfg.getTemplate(input.getTemplate());
 			JavaFileObject jfo = filer.createSourceFile(input.getPackageName() + "." + input.getTargetName());
 			Writer writer = jfo.openWriter();
 			template.process(input, writer);
 		}
 	}
 
-	public void createFilesSafely(List<ServiceInput> annotatedClazzes) {
+	public void createFilesSafely(List<Input> annotatedClazzes) {
 		Objects.requireNonNull(annotatedClazzes);
 		try {
 			createFiles(annotatedClazzes);

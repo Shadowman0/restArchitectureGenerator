@@ -17,8 +17,8 @@ import javax.tools.Diagnostic;
 
 import com.google.auto.service.AutoService;
 
+import example.domain.Input;
 import example.domain.RestArchitecture;
-import example.domain.ServiceInput;
 import example.util.ElementParsingService;
 import example.util.Logger;
 import example.util.SourceFileWritingService;
@@ -47,11 +47,11 @@ public class RestArchitectureProcessor extends AbstractProcessor {
 		if (!roundEnv.processingOver()) {
 			note("[RestArchitecture] Started");
 			Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(RestArchitecture.class);
-			List<ServiceInput> parsedClazzes = new ArrayList<>();
+			List<Input> parsedClazzes = new ArrayList<>();
 			for (Element element : annotatedElements) {
-				ServiceInput clazz = this.elementParser.createAnnotatedClazz(element);
 				note("[RestArchitecture] Processing " + element.getSimpleName());
-				parsedClazzes.add(clazz);
+				parsedClazzes.add(elementParser.createServiceInput(element));
+				parsedClazzes.add(elementParser.createDtoInput(element));
 			}
 
 			this.sourceFileWriter.createFilesSafely(parsedClazzes);
