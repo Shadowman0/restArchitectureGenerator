@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 
 import org.junit.Before;
@@ -40,8 +42,19 @@ public class ElementParsingServiceTest {
 		List<String> collect = enclosedElements.stream().filter(e -> e.getKind().isField()).map(e -> {
 			return extractTypeName(e);
 		}).collect(Collectors.toList());
+
 		DtoInput actualParsedClazz = classUnderTest.createDtoInput(classElement);
 		assertThat(actualParsedClazz).isEqualTo("");
+	}
+
+	@Test
+	public void getFieldNames2() throws Exception {
+		TypeElement classElement = elements.getTypeElement("example.util.DummyEntity");
+		MockProcessingEnvironment mockedEnvironment = new MockProcessingEnvironment("test");
+		ElementParsingService classUnderTest = new ElementParsingService(mockedEnvironment);
+		List<? extends Element> enclosedElements = classElement.getEnclosedElements();
+		List<VariableElement> fieldsIn = ElementFilter.fieldsIn(enclosedElements);
+		assertThat(fieldsIn).isEqualTo("");
 	}
 
 	private String extractTypeName(Element e) {
