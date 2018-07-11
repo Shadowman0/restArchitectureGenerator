@@ -11,7 +11,7 @@ import de.etengo.eemweb.commons.core.builder.GenerateBuilder;
 public class ${classname}DTO extends VersionedDTO {
 	
 	<#list fields as field>
-		<#if field.type?matches("String")>@Size(max = ?)</#if>
+		<#if field.type?matches("String")>@Size(max = 100)</#if>
 		private final ${field.type} ${field.name};
 	</#list >
 	
@@ -37,6 +37,7 @@ public class ${classname}DTO extends VersionedDTO {
 				<#else>null
 			</#if>
 		</#if>
+		<#sep>,
    	</#list >);
 	}
 	

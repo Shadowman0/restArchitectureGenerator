@@ -5,6 +5,11 @@ public class EntityField {
 	private String type;
 	private String name;
 
+	@Override
+	public String toString() {
+		return "EntityField [" + type + " " + name + "]";
+	}
+
 	public EntityField(String type, String name) {
 		this.type = type;
 		this.name = name;

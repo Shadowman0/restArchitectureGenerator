@@ -1,6 +1,5 @@
 package example.util;
 
-import java.lang.annotation.ElementType;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,15 +43,23 @@ public class ElementParsingService {
 		RestArchitecture annotation = annotatedElement.getAnnotation(RestArchitecture.class);
 		if (annotatedElement.getKind() == ElementKind.CLASS) {
 			TypeElement typeEl = convertIfValid(annotatedElement);
-			List<? extends Element> allMembers = processingEnv.getElementUtils().getAllMembers(typeEl);
-			List<EntityField> fields = allMembers.stream()//
-					.filter(this::isField)//
-					.map(e -> new EntityField(asTypeElement(e.asType()).getSimpleName().toString(), ""))//
+			List<? extends Element> enclosedElements = typeEl.getEnclosedElements();
+			List<EntityField> fields = enclosedElements.stream()//
+					.filter(e -> e.getKind().isField())//
+					// .map(e -> new
+					// EntityField(asTypeElement(e.asType()).getSimpleName().toString(), ""))//
+					.map(e -> new EntityField(extractTypeName(e), e.toString()))//
 					.collect(Collectors.toList());//
 			return new DtoInput(typeEl, typeEl, fields);
 		} else {
 			throw new InvalidElementException(String.format("Unexpected type %s!", annotatedElement), annotatedElement);
 		}
+	}
+
+	private String extractTypeName(Element e) {
+		String type = e.asType().toString();
+		String[] split = type.split("\\.");
+		return split[split.length - 1];
 	}
 
 	private TypeElement convertIfValid(final Element annotatedElement) {
@@ -71,10 +78,6 @@ public class ElementParsingService {
 
 	private ServiceInput getInputForAnnotatedPojo(TypeElement pojoTypeEl, RestArchitecture annotation) {
 		return new ServiceInput(pojoTypeEl, pojoTypeEl);
-	}
-
-	private boolean isField(Element element) {
-		return element.getKind().equals(ElementType.FIELD);
 	}
 
 	private TypeElement asTypeElement(TypeMirror typeMirror) {

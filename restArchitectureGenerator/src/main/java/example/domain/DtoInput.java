@@ -10,6 +10,11 @@ public class DtoInput extends Input {
 	private String nameSuffix = "Dto";
 	private List<EntityField> fields;
 
+	@Override
+	public String toString() {
+		return "DtoInput [fields=" + fields + "]";
+	}
+
 	public DtoInput(Element annotatedElement, TypeElement clazz, List<EntityField> fields) {
 		super(annotatedElement, clazz);
 		this.setFields(fields);
